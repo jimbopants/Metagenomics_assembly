@@ -17,5 +17,6 @@
 * idba requires interleaved fasta files (Not allowed: fastq, compressed, or forward/reverse paired end reads)
 * Has a built in function **fq2fa** for fixing our reads: `fq2fa --merge --filter FWD REV FA_OUT`
 
-### Useful shell commands:
+### Useful shell/msub commands:
 * `gunzip *.fq.gz` Decompress every .fq file in the current directory. Useful for idba which doesn't currently handle compressed files
+* `showq -u NETID`: Shows your q'd jobs
