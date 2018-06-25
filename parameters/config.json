@@ -1,0 +1,17 @@
+{
+	"idba": {
+		"mink": 20,
+		"maxk": 80,
+		"step": 10,
+		"min_contig": 500,
+		"num_threads": 24
+	},
+	"megahit": {
+		"k-min": 21,
+		"k-max": 121,
+		"k-step": 10,
+		"t": 12,
+		"m": 0.9
+	},
+	"email": "jamesgriffin2013@u.northwestern.edu"
+}
