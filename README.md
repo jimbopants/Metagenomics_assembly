@@ -19,8 +19,8 @@ Input Directory Structure:
 * annotations is created by prokka_job_writer.py
 
 ├───raw  
-    ├───{Samples}  
-        ├───{Sample}*R1*.gzip  
+⋅⋅⋅├───{Samples}  
+⋅⋅⋅⋅⋅⋅├───{Sample}*R1*.gzip  
         ├───{Sample}*R2*.gzip  
 ├───clean_reads  
     ├───{Samples}  
