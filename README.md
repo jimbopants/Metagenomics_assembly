@@ -11,6 +11,9 @@
 * This repo contains mostly python scripts for job submission scripts for metagenomic assembly on Northwestern's Quest computing cluster. See the diagram below for an overview of what steps were used.  
 * I also included links to the documentation for all of the 3rd party programs I used and a bit of description of what the programs do and what intermediate files are created and if they have any use.  
 * Lastly there are some useful shell commands I didn't know about for small things, maybe useful for other Wells people later ¯\_(ツ)_/¯
+* Next time I will learn how to use readthedocs and snakemake.
+
+![Pipeline](/workflow.pdf)
 
 
 ### Input Directory Structure:
@@ -47,7 +50,7 @@ Root = /projects/b1042/Wells/User/ProjectName (or /projects/b1052/User/ProjectNa
 ```
 
 ### File descriptions:
-* `assembly_script_writer.py`:
+* `assembly_job_writer.py`:
   * Creates a valid msub job submission script for every PE fastq sample in a clean_reads directory, then submits w/ subprocess
   * Default parameters for the assembly algorithms are based on Gao Han's/Yubo's settings. You can edit these in the `config.json` file and pass it to the `--params` argument when you run the code on Quest.
   * command line options are:
