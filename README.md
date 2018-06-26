@@ -13,8 +13,7 @@
 * Lastly there are some useful shell commands I didn't know about for small things, maybe useful for other Wells people later ¯\_(ツ)_/¯
 * Next time I will learn how to use readthedocs and snakemake.
 
-![Pipeline](/workflow.png | width=500)
-
+<img src="/workflow.png" width="500">
 
 ### Input Directory Structure:
 Root = /projects/b1042/Wells/User/ProjectName (or /projects/b1052/User/ProjectName)
