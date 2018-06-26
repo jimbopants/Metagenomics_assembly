@@ -1,13 +1,48 @@
 ## Metagenomic Assembly Pipeline and Notes
 
+* [Metagenomic Assembly Pipeline and Notes](#metagenomic-assembly-pipeline-and-notes)
+         * [Contents:](#contents)
+         * [File descriptions:](#file-descriptions)
+         * [Assembly docs:](#assembly-docs)
+         * [Useful shell/msub commands:](#useful-shellmsub-commands)
+
 ### Contents:
 * Code for job submission scripts for metagenomic assembly on Northwestern's Quest computing cluster
 * Links to documentation for the assemblers used
 * Some useful shell commands I didn't know about for small things, maybe useful for other Wells people later
 
 
-### Why not Snakemake?
-Snakemake is a bioinformatics pipeline building tool that uses rules to automatically create directory structures as needed and then run a series of steps. I had planned on making a snakemake pipeline for my metagenomic analysis steps but decided to stick with python scripts whose output is batch job files to save time. 
+Input Directory Structure:
+/projects/b1042/Wells/User/ProjectName (or /projects/b1052/User/ProjectName)
+* int_assembled directory is created by assembly_job_writer.py
+* assembled is created by cleanup_intermediates.py
+* annotations is created by prokka_job_writer.py
+
+├───raw
+    ├───{Samples}
+        ├───{Sample}*R1*.gzip
+        ├───{Sample}*R2*.gzip
+├───clean_reads
+    ├───{Samples}
+        ├───{Sample}*R1*.gzip
+        ├───{Sample}*R2*.gzip
+├───int_assembled #This gets deleted by cleanup_intermediates.py
+    ├───idba
+        ├───{Samples}
+            ├───{aligned#, other useless stuff}
+            ├───contigs.fa
+            ├───scaffolds.fa
+            ├───log
+    ├───megahit
+        ├───{Samples}
+            ├───contigs.fa
+            ├───{other stuff}
+├───assembled
+    ├───{Methods}
+        ├───{Sample}_contigs.fa
+├───annotations
+    ├───{Samples}
+
 
 
 ### File descriptions:
