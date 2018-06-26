@@ -1,10 +1,10 @@
 ## Metagenomic Assembly Pipeline and Notes
 
-* [Metagenomic Assembly Pipeline and Notes](#metagenomic-assembly-pipeline-and-notes)
-         * [Contents:](#contents)
-         * [File descriptions:](#file-descriptions)
-         * [Assembly docs:](#assembly-docs)
-         * [Useful shell/msub commands:](#useful-shellmsub-commands)
+* [Metagenomic Assembly Pipeline and Notes](#metagenomic-assembly-pipeline-and-notes)  
+         * [Contents:](#contents)  
+         * [File descriptions:](#file-descriptions)  
+         * [Assembly docs:](#assembly-docs)  
+         * [Useful shell/msub commands:](#useful-shellmsub-commands)  
 
 ### Contents:
 * Code for job submission scripts for metagenomic assembly on Northwestern's Quest computing cluster
@@ -18,30 +18,30 @@ Input Directory Structure:
 * assembled is created by cleanup_intermediates.py
 * annotations is created by prokka_job_writer.py
 
-├───raw
-    ├───{Samples}
-        ├───{Sample}*R1*.gzip
-        ├───{Sample}*R2*.gzip
-├───clean_reads
-    ├───{Samples}
-        ├───{Sample}*R1*.gzip
-        ├───{Sample}*R2*.gzip
-├───int_assembled #This gets deleted by cleanup_intermediates.py
-    ├───idba
-        ├───{Samples}
-            ├───{aligned#, other useless stuff}
-            ├───contigs.fa
-            ├───scaffolds.fa
-            ├───log
-    ├───megahit
-        ├───{Samples}
-            ├───contigs.fa
-            ├───{other stuff}
-├───assembled
-    ├───{Methods}
-        ├───{Sample}_contigs.fa
-├───annotations
-    ├───{Samples}
+├───raw  
+    ├───{Samples}  
+        ├───{Sample}*R1*.gzip  
+        ├───{Sample}*R2*.gzip  
+├───clean_reads  
+    ├───{Samples}  
+        ├───{Sample}*R1*.gzip  
+        ├───{Sample}*R2*.gzip  
+├───int_assembled #This gets deleted by cleanup_intermediates.py  
+    ├───idba  
+        ├───{Samples}  
+            ├───{aligned#, other useless stuff}  
+            ├───contigs.fa  
+            ├───scaffolds.fa  
+            ├───log  
+    ├───megahit  
+        ├───{Samples}  
+            ├───contigs.fa  
+            ├───{other stuff}  
+├───assembled  
+    ├───{Methods}  
+        ├───{Sample}_contigs.fa  
+├───annotations  
+    ├───{Samples}  
 
 
 
