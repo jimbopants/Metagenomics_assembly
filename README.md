@@ -18,9 +18,10 @@ Input Directory Structure:
 * assembled is created by cleanup_intermediates.py
 * annotations is created by prokka_job_writer.py
 
-├───raw  
-⋅⋅⋅├───{Samples}  
-⋅⋅⋅⋅⋅⋅├───{Sample}*R1*.gzip  
+```bash
+|--raw  
+    ├───{Samples}  
+        ├───{Sample}*R1*.gzip  
         ├───{Sample}*R2*.gzip  
 ├───clean_reads  
     ├───{Samples}  
@@ -42,7 +43,7 @@ Input Directory Structure:
         ├───{Sample}_contigs.fa  
 ├───annotations  
     ├───{Samples}  
-
+```
 
 
 ### File descriptions:
