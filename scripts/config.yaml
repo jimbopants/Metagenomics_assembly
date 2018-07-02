@@ -1,0 +1,65 @@
+---
+# Run Options:
+sub: False # Whether to submit created jobs or not
+co-assembly: True # whether the samples should be concatenated & co-assembled
+sample-assembly: True # Whether individual samples should be assembled
+
+# Comment out a program and it will be skipped when the associated job_writer is called.
+methods:
+  assembly:
+    #idba
+    megahit
+    #spades # not run because commented out
+  map:
+    bwa
+    bowtie
+
+# Job Header Info:
+email: "jamesgriffin2013@u.northwestern.edu"
+allocation: "b1042"
+queue: "genomics"
+nodes: "nodes=1:ppn=24"
+walltime: "48:00:00"
+
+# Directory structure: kind of useless right now
+base_dir: "/projects/b1042/Wells/Jim/Wells01"
+paths:
+  raw: "/reads/"
+  clean: "/clean_reads/"
+  assembly: "/assembled/"
+  raw_interleaved: "/fa_interleaved/"
+  map: "/mapped_reads/"
+  quast: "/quast_stats/"
+
+
+# Moule filepaths
+modules:
+  idba: "idba/2016_12_longread"
+  bowtie: "bowtie2/2.2.6"
+  samtools: "samtools/1.2"
+  megahit: "megahit/1.0.6.1"
+  python: "python/anaconda3.6"
+  boost: "boost/1.56.0"
+  bwa: "bwa/0.7.12"
+  bowtie: "bowti2/2.2.6"
+binaries:
+  quast: "/projects/b1052/shared/quast-4.6.3/quast.py"
+  spades: "/projects/b1052/shared/SPAdes-3.12.0-Linux/bin"
+
+# Parameters for different methods:
+
+idba:
+  mink: 21
+  maxk: 81
+  step: 10
+  min_contig: 500
+  num_threads: 24
+megahit:
+  k-min: 21
+  k-max: 121
+  k-step: 10
+  t: 12
+  m: 0.9
+
+
+...
