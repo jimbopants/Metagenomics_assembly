@@ -3,12 +3,13 @@
 sub: False # Whether to submit created jobs or not
 co-assembly: True # whether the samples should be concatenated & co-assembled
 sample-assembly: True # Whether individual samples should be assembled
+num_threads: 24
 
 # Comment out a program and it will be skipped when the associated job_writer is called.
 methods:
   assembly:
     #idba
-    megahit
+    #megahit
     #spades # not run because commented out
   map:
     bwa
@@ -29,7 +30,7 @@ paths:
   assembly: "/assembled/"
   raw_interleaved: "/fa_interleaved/"
   map: "/mapped_reads/"
-  quast: "/quast_stats/"
+  quast_out: "/quast_stats/"
 
 
 # Moule filepaths
@@ -43,7 +44,7 @@ modules:
   bwa: "bwa/0.7.12"
   bowtie: "bowti2/2.2.6"
 binaries:
-  quast: "/projects/b1052/shared/quast-4.6.3/quast.py"
+  quast: "/projects/b1052/shared/quast-4.6.3/"
   spades: "/projects/b1052/shared/SPAdes-3.12.0-Linux/bin"
 
 # Parameters for different methods:

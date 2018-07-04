@@ -8,7 +8,8 @@
          * [Useful shell/msub commands:](#useful-shellmsub-commands)  
 
 ### Contents:
-* This repo contains mostly python scripts for job submission scripts for metagenomic assembly on Northwestern's Quest computing cluster. See the diagram below for an overview of what steps were used.  
+* This repo contains mostly python scripts that generate MSUB submission scripts for metagenomic analysis on Northwestern's Quest computing cluster. See the diagram below for an overview of what steps were used.
+* The general workflow is to manage all user-input and options through the config.yaml file and then run the various X_job_writer.py scripts to run different steps. Paths should be handled by the config file to make running the pipeline relatively straight forward.
 * I also included links to the documentation for all of the 3rd party programs I used and a bit of description of what the programs do and what intermediate files are created and if they have any use.  
 * Lastly there are some useful shell commands I didn't know about for small things, maybe useful for other Wells people later ¯\_(ツ)_/¯
 * Next time I will learn how to use readthedocs and snakemake.

@@ -3,14 +3,14 @@ assembly_job_writer:
     This script writes (and submits) batch job submission scripts for several
     different assemblers. See the readme on github for more help.
 
-Assumes you have a directory of demultiplexed samples like:
+By default, assumes you have a directory of demultiplexed samples like:
     PROJECTDIR/
         clean_reads/
             S1/{forward, reverse}
             S2/
 
 Usage:
-    1. Check or set the following parameters in the config.yaml file before running:
+    1. Set the following parameters in the config.yaml file before running:
     Including:
         sub (submit jobs Yes/No?)
         co-assembly / sample-assemblys
@@ -28,6 +28,19 @@ Usage:
             Comment out any you don't want to use
 
     2. Run the script at the command line or as part of a workflow script.
+
+Arguments (Optional, will override config file, mostly for convenience/speed):
+    --directory, -d     Directory containing per-sample folders to process.
+
+    --method, -m        idba,megahit (comma separated list)
+
+    --sample, -s        Path to single sample directory. Forces script to operate on a
+                        single sample only
+
+    --out OUT, -o OUT   Output filepath
+
+    --sub SUB           (Boolean: True/False) (overrides config)
+                        Writes shell scripts but doesn't submit jobs
 
 Config File:
     The config file is a yaml file with key-value pairs that holds options for
@@ -48,6 +61,7 @@ __author_email__ = "jimbogrif@gmail.com"
 
 # Imports:
 import glob
+import inspect
 import shared_utilities as ll
 
 def main():
@@ -55,13 +69,19 @@ def main():
     Assembles samples with the selected method(s)
     """
     # Load Parameters
-    params = ll.read_config()
-
-    # Maps assemblers to functions. Comment out assemblers in config.yaml to skip that one
+    params, args = ll.load_params_and_input('assembly')
+    print (params)
+    print(args)
+    # Maps assemblers to functions. Comment out assemblers in config.yaml or override with -m at runtime
     assemblers = {"megahit" : megahit, "idba" : idba}
 
-    # Returns a list of [path, sampleID] for each sample to map
-    samples_to_assemble = ll.paths_and_samples(params["paths"]["clean"])
+    # Returns a list of [path, sampleID] for each sample to assemble
+    # From command line input (-s or -d or config file)
+    if args.sample:
+        samples_to_assemble = [[args.sample, args.sample.rsplit('/', 1)[1]]]
+    else:
+        samples_to_assemble = ll.paths_and_samples(params["paths"]["clean"])
+
     # Create job scripts for each method-sample pair
     for method in params["methods"]["assembly"]:
         for sample in samples_to_assemble:
@@ -77,7 +97,7 @@ def main():
                 print("Writing MSUB submission script\n\
                 Jobfile: {}\n".format(job_script))
                 header_info = ll.fill_header(job_script, params)
-                forward, reverse = glob.glob(sample[0]+"/*")[:2]
+                forward, reverse = sorted(glob.glob(sample[0]+"/*.fq")[:2])
                 cmds = assemblers[method](forward, reverse, params, outdir, sample)
 
                 # Write lines to job:
@@ -120,11 +140,13 @@ def idba(forward, reverse, params, outdir, sample):
                         params['idba']['maxk'],
                         params['idba']['step'],
                         params['idba']['min_contig'],
-                        params['idba']['num_threads'],
+                        params['num_threads'],
                         outdir
                        ))
 
     return [idba_load_cmd, fq2fa_cmd, idba_cmd]
+
+
 
 if __name__ == "__main__":
     main()

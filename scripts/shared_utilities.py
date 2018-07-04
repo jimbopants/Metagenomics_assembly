@@ -3,23 +3,13 @@ shared_utilities:
     This script contains functions shared across the job_writing scripts.
     I usually import it as ll for low level.
 
-## Functions:
-read_config:
-    Reads a config.yaml and saves the parameters as a dictionary
-
-fill_header:
-    Writes all of the generic properties of an msub submission script
-
-submit_job:
-    Submits a job using msub
-
-TODO:
-    other stuff as needed
+## See individual funcion docstrings for usage
 """
 __author__ = "Jim Griffin"
 __author_email__ = "jamesgriffin2013@u.northwestern.edu"
 
 # Imports:
+import argparse
 import datetime
 import os
 import subprocess
@@ -28,6 +18,14 @@ import yaml
 
 CONFIGFILE = "./config.yaml"
 
+################
+# TOC
+# 1. Config values and user Input
+# 2. Path Management & Expansion
+# 3. Job header and submission
+
+################
+# 1. Config values and user Input
 def read_config(config=CONFIGFILE):
     """
     Reads parameters in from a yaml file and returns a
@@ -35,15 +33,92 @@ def read_config(config=CONFIGFILE):
     """
     params = yaml.load(open(config))
     params = make_relative_paths(params)
-    params["methods"]["assembly"] = params["methods"]["assembly"].split()
-    params["methods"]["map"] = params["methods"]["map"].split()
+    for key in params["methods"]:
+        if params["methods"][key]:
+            params["methods"][key] = params["methods"][key].split()
     return params
 
+def parse_arguments(process):
+    """Parse and return command line arguments as an argparse args object"""
+    parser = argparse.ArgumentParser()
+    process_choices = {"assembly" : "[megahit,idba]",
+                     "map" : "[bwa,bowtie]",
+                     None: "Ignored for this script"
+                     }
+    parser.add_argument("--directory", "-d", type=str,
+                        help="Directory containing per-sample folders to process. \
+                        (overrides config)")
+    parser.add_argument("--methods", "-m", type=str,
+                        help="comma separated list of methods to use:\
+                        Valid choices are {}".format(process_choices[process]))
+    parser.add_argument("--out", "-o", type=str,
+                        help="Output filepath (overrides config)")
+    parser.add_argument("--sub",
+                        help="writes shell scripts but doesn't submit jobs \
+                        (overrides config)")
+    parser.add_argument("--sample", "-s", nargs='?', const=True,
+                        help="Path to single file. \
+                        Forces script to operate on a single file only")
+    try:
+        result = parser.parse_args()
+        return result
+    except Exception as e:
+        parser.print_help()
+        print(e)
+        sys.exit(0)
+
+def load_params_and_input(process):
+    """
+    Overrides config.yaml values with command line input.
+    Returns both args (command line arguments) & params (config.yaml with updated values)
+    """
+    params = read_config()
+    args = parse_arguments(process)
+    if args.sub:
+        params["sub"] = args.sub
+    if args.methods:
+        params["methods"][process] = args.methods.split(',')
+    if args.directory:
+        params["paths"]["clean"] = args.directory
+    if args.out:
+        params["paths"][process] = args.out
+    return params, args
+
+################
+# 2. Path Management & Expansion
 def make_relative_paths(params):
+    """Update config paths by prepending base directory"""
     for path in params["paths"]:
         params["paths"][path] = "{0}{1}".format(params["base_dir"], params["paths"][path])
     return params
 
+def paths_and_samples(directory):
+    """
+    Returns a zipped list of [(path, samplename), (path2, name2), ...]
+    based on the subdirectories in DIRECTORY. Mostly used to iterate over all samples
+    when applying a processing step to all samples
+    ie: /assembled/{C1A,C2A} -> [["/assembled/C1A", "C1A"], ["/assembled/C2A/", "C2A"]]
+    """
+    sample_dirs = [f.path for f in os.scandir(directory) if f.is_dir()]
+    sample_ids = [sample.split('/')[-1] for sample in sample_dirs]
+    zipped_items = list(zip(sample_dirs, sample_ids))
+    return zipped_items
+
+def make_output_dir(out, method, sample):
+    """
+    Creates a sample and method specific output directory if it does not exist
+    and returns the filepath. Does not have an ending / slash
+    """
+    if sample == None:
+        full_output_path = "{0}{1}".format(out, method)
+    else:
+        full_output_path = "{0}{1}/{2}".format(out, method, sample)
+    if not os.path.exists(full_output_path):
+        os.makedirs(full_output_path)
+    return full_output_path
+
+################
+# 3. Job header and submission
 def fill_header(filename, params):
     """
     Creates a list of msub header strings that can be pasted into a job submission script.
@@ -78,28 +153,3 @@ def submit_job(job_file):
     Jobfile: {}".format(job_file))
     shell_script = "msub {}".format(job_file)
     subprocess.check_call([shell_script], shell=True)
-
-def paths_and_samples(directory):
-    """
-    Returns a zipped list of [(path, samplename), (path2, name2), ...]
-    based on the subdirectories in DIRECTORY. Mostly used to iterate over all samples
-    when applying a processing step to all samples
-    ie: /assembled/{C1A,C2A} -> [["/assembled/C1A", "C1A"], ["/assembled/C2A/", "C2A"]]
-    """
-    sample_dirs = [f.path for f in os.scandir(directory) if f.is_dir()]
-    sample_ids = [sample.split('/')[-1] for sample in sample_dirs]
-    zipped_items = list(zip(sample_dirs, sample_ids))
-    return zipped_items
-
-def make_output_dir(out, method, sample):
-    """
-    Creates a sample and method specific output directory if it does not exist
-    and returns the filepath. Does not have an ending / slash
-    """
-    if sample == None:
-        full_output_path = "{0}{1}".format(out, method)
-    else:
-        full_output_path = "{0}{1}/{2}".format(out, method, sample)
-    if not os.path.exists(full_output_path):
-        os.makedirs(full_output_path)
-    return full_output_path
