@@ -3,7 +3,7 @@
 - [Metagenomic Assembly Pipeline and Notes](#metagenomic-assembly-pipeline-and-notes)
   * [Overview:](#overview-)
   * [Directory Structure:](#directory-structure-)
-  * [Installation:](#installation-)
+  * [Installation:](#installation)
   * [Usage:](#usage-)
     + [Method Wrappers:](#method-wrappers-)
     + [Using the Config file & Command Line Options:](#using-the-config-file---command-line-options-)
