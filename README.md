@@ -62,6 +62,7 @@ The tree below is taken directly from what my project folder on quest looks like
 Clone this repo while logged into Quest:
 `Git clone https://github.com/jimbopants/Metagenomics_assembly`
 
+---
 ## Usage:
 
 ### Method Wrappers:
@@ -70,25 +71,26 @@ Clone this repo while logged into Quest:
     * Output: assembled reads in /assembled/{METHOD}/{SAMPLE}
 
 2. **map_reads.py**: This script wraps the mapping programs BWA and bowtie2 as specified by the config file.
-    * Input:
+    * Input: contig files defined by [paths]["reads_to_map"] + ["contig_names"] in the config file
     * Output: BAM alignment files in /mapped_reads in /assembled/{METHOD}/{SAMPLE}
 
 3. **quast_assembly_stats.py**: Calculates assembly statistics for all of the assemblies to compare performance and QC the assembly step.
-    * Input: assembled contigs found in assembled/{idba,megahit} based on not active assembly methods in the config file.
+    * Input: assembled contigs found in "assembled"/{idba,megahit} based on active assembly methods in the config file.
 
-
+---
 ### Using the Config file & Command Line Options:
 By default, all of the method wrappers will load options from config.yaml. Parameters are divided into 3 sections:
-1. Run and header options:
+1. **Run and header options**:
     * Controls msub options used in the job submission scripts (allocation, resources, email, etc.) as well as whether to submit jobs after they are written.
-2. Assembly and mapping methods:
+2. **Assembly and mapping methods**:
     * Methods to use for assembly and mapping as well as method specific parameters are stored here.
     * The defaults come from Gao Han and Yubo's work.
     * Commented out methods are ignored.
-3. Paths:
+3. **Paths**:
     * The default directory structure for input/output from various methods is listed here for organization and to save time when scaling analyses for many samples.
     * **base_dir** needs to be updated to wherever your analyses are running.
 
+---
 ### Command line input:
 For debugging or quickly updating parameters without editing the config file, several common paths and options can be overwritten using command line arguments. All of the method wrappers can be called with the following options which will override the config file values:  
 ```bash
@@ -104,6 +106,7 @@ For debugging or quickly updating parameters without editing the config file, se
                     Writes shell scripts but doesnt submit jobs
 ```
 
+---
 ## 3rd Party Docs:
 ### Assembly
 * [idba](https://github.com/loneknightpy/idba)
@@ -123,6 +126,7 @@ For debugging or quickly updating parameters without editing the config file, se
 * [prokka](https://github.com/tseemann/prokka)
     * Basically a wrapper for prodigal/hmmer with some automatic database construction. Seems easier to use than setting up each component individually
 
+---
 ## Useful shell/msub/Quest commands:
 * [Quest user guide](https://kb.northwestern.edu/page.php?id=72406)
 * `showq -u NETID`: Shows your q'd jobs
