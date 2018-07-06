@@ -38,7 +38,7 @@ import shared_utilities as ll
 def main():
     params, args = ll.load_params_and_input("assembly")
     contig_names = {"idba" : "contig.fa",
-                    "megahit" : "final_contigs.fa"}
+                    "megahit" : "final.contigs.fa"}
     # If -sample is passed, just check assembly stats for that file,
     # otherwise expand the directory based on config or -directory
     if args.sample is None:
@@ -56,11 +56,12 @@ def main():
 
     timestamp = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d')
     job_script = "{0}{1}.quast.sh".format(params["paths"]["quast_out"], timestamp)
+    #Actually it's easier to just run on a head node.
     header_info = ll.fill_header(job_script, params)
 
     # Could add support/option for metaquast later, I mostly found it useless.
-    quast_lines = ['export PATH="$PATH:{0}\n\n"'.format(params["binaries"]["quast"]),
-                   "quast {0} -o {1} --threads {2} -L".format(
+    quast_lines = ["{0} {1} -o {2} --threads {3} -L".format(
+                                                        params["binaries"]["quast"]
                                                         files_to_quast,
                                                         params["paths"]["quast_out"],
                                                         params["num_threads"])]

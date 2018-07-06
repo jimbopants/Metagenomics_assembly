@@ -104,18 +104,12 @@ def paths_and_samples(directory):
     zipped_items = list(zip(sample_dirs, sample_ids))
     return zipped_items
 
-def make_output_dir(out, method, sample):
+def make_dir(path_out):
     """
-    Creates a sample and method specific output directory if it does not exist
-    and returns the filepath. Does not have an ending / slash
+    Creates a directory if it does not exist and returns the filepath.
     """
-    if sample == None:
-        full_output_path = "{0}{1}".format(out, method)
-    else:
-        full_output_path = "{0}{1}/{2}".format(out, method, sample)
-    if not os.path.exists(full_output_path):
-        os.makedirs(full_output_path)
-    return full_output_path
+    os.makedirs(path_out, exist_ok=True)
+    return path_out
 
 ################
 # 3. Job header and submission

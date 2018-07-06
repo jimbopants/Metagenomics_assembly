@@ -61,7 +61,6 @@ __author_email__ = "jimbogrif@gmail.com"
 
 # Imports:
 import glob
-import inspect
 import shared_utilities as ll
 
 def main():
@@ -70,8 +69,6 @@ def main():
     """
     # Load Parameters
     params, args = ll.load_params_and_input('assembly')
-    print (params)
-    print(args)
     # Maps assemblers to functions. Comment out assemblers in config.yaml or override with -m at runtime
     assemblers = {"megahit" : megahit, "idba" : idba}
 
@@ -88,8 +85,8 @@ def main():
             # Generate job script name and file out paths
             # megahit can't recursively make paths or write to existing paths...
             outdir = "{0}{1}/{2}".format(params["paths"]["assembly"], method, sample[1])
-            ll.make_output_dir(params["paths"]["assembly"], method, None)
-            job_out = ll.make_output_dir(params["paths"]["assembly"], "job_logs", None)
+            outdir = ll.make_dir("{}{}/".format(params["paths"]["assembly"], method)
+            job_out = ll.make_dir(params["paths"]["assembly"], "job_logs", None)
             job_script = "{0}/{1}.assemble.{2}.sh".format(job_out, sample[1], method)
 
             # Open job script for writing and write header, then add method-specific lines
@@ -97,14 +94,13 @@ def main():
                 print("Writing MSUB submission script\n\
                 Jobfile: {}\n".format(job_script))
                 header_info = ll.fill_header(job_script, params)
+                # todo: this might be a relative path. update to absolute.
                 forward, reverse = sorted(glob.glob(sample[0]+"/*.fq")[:2])
                 cmds = assemblers[method](forward, reverse, params, outdir, sample)
-
                 # Write lines to job:
                 msub_lines = header_info + cmds
                 for line in msub_lines:
                     file_out.write(line)
-
             if params["sub"] is True:
                 ll.submit_job(job_script)
 
@@ -143,10 +139,7 @@ def idba(forward, reverse, params, outdir, sample):
                         params['num_threads'],
                         outdir
                        ))
-
     return [idba_load_cmd, fq2fa_cmd, idba_cmd]
-
-
 
 if __name__ == "__main__":
     main()

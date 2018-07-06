@@ -54,8 +54,9 @@ def idba(path_in):
     return
 
 def megahit(path_in):
-    """ Removes megahit intermediates in place."""
+    """ Removes megahit intermediates in place. Renames contigs to contig.fa"""
     shutil.rmtree("{0}/{1}".format(path_in, "intermediate_contigs/")) #
+    os.rename("{0}/final.contigs.fa".format(path_in), "{0}/contig.fa".format(path_in))
     os.listdir(path_in)
     return
 

@@ -1,57 +1,38 @@
 ---
-# Run Options:
+############
+# TOC
+# 1. Run and header options
+# 2. Assembly and mapping methods
+# 3. Paths
+
+############
+# 1. Run Options:
 sub: False # Whether to submit created jobs or not
-co-assembly: True # whether the samples should be concatenated & co-assembled
-sample-assembly: True # Whether individual samples should be assembled
 num_threads: 24
 
-# Comment out a program and it will be skipped when the associated job_writer is called.
-methods:
-  assembly:
-    #idba
-    #megahit
-    #spades # not run because commented out
-  map:
-    bwa
-    bowtie
-
-# Job Header Info:
+# 1b. Job Header Info:
 email: "jamesgriffin2013@u.northwestern.edu"
 allocation: "b1042"
 queue: "genomics"
 nodes: "nodes=1:ppn=24"
 walltime: "48:00:00"
+short_walltime: "2:00:00"
 
-# Directory structure: kind of useless right now
-base_dir: "/projects/b1042/Wells/Jim/Wells01"
-paths:
-  raw: "/reads/"
-  clean: "/clean_reads/"
-  assembly: "/assembled/"
-  raw_interleaved: "/fa_interleaved/"
-  map: "/mapped_reads/"
-  quast_out: "/quast_stats/"
+############
+# 2. Methods: (Comment out methods to skip)
+methods:
+  assembly:
+    idba
+    megahit
+    #spades # not run because commented out
+  map: # At the moment can only run one at a time. switch the comment line and paths/map to run the other method.
+    bwa
+    #bowtie
 
-
-# Moule filepaths
-modules:
-  idba: "idba/2016_12_longread"
-  bowtie: "bowtie2/2.2.6"
-  samtools: "samtools/1.2"
-  megahit: "megahit/1.0.6.1"
-  python: "python/anaconda3.6"
-  boost: "boost/1.56.0"
-  bwa: "bwa/0.7.12"
-  bowtie: "bowti2/2.2.6"
-binaries:
-  quast: "/projects/b1052/shared/quast-4.6.3/"
-  spades: "/projects/b1052/shared/SPAdes-3.12.0-Linux/bin"
-
-# Parameters for different methods:
-
+# 2b. Method-specific parameters
 idba:
   mink: 21
-  maxk: 81
+  maxk: 101
   step: 10
   min_contig: 500
   num_threads: 24
@@ -62,5 +43,31 @@ megahit:
   t: 12
   m: 0.9
 
+############
+# 3. Project filepaths
+base_dir: "/projects/b1042/Wells/Jim/Wells01" # Prepended to all other params[paths]
+contig_names: "contig.fa" # (map_reads.py) Default megahit names is final.contigs.fa, cleanup_intermediates should update this.
+paths: # These all get prepended by base_dir since relative paths don't seem to work well with Quest.
+  raw: "/reads/"
+  clean: "/clean_reads/"  # assemble_reads.py looks here for samples
+  assembly: "/assembled/" # assemble_reads.py puts output here
+  raw_interleaved: "/fa_interleaved/" # assemble_reads.py + IDBA makes this
+  reads_to_map: "/assembled/idba/" # map_reads.py maps reads found here. Matches sample names to clean_reads
+  map: "/mapped_reads/idba_bwa/" # map_reads puts output here.
+  quast_out: "/quast_stats/" #quast_assembly_stats puts output here.
 
+# 3b. Module filepaths
+modules:
+  idba: "idba/2016_12_longread"
+  bowtie: "bowtie2/2.2.6"
+  samtools: "samtools/1.2"
+  megahit: "megahit/1.0.6.1"
+  python: "python/anaconda3.6"
+  boost: "boost/1.56.0"
+  bwa: "bwa/0.7.12"
+  bowtie: "bowti2/2.2.6"
+binaries:
+  quast: "/projects/b1052/shared/quast-4.6.3/quast.py"
+  spades: "/projects/b1052/shared/SPAdes-3.12.0-Linux/bin/spades"
+############
 ...
