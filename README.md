@@ -1,18 +1,18 @@
 # Metagenomic Assembly Pipeline and Notes
 
 - [Metagenomic Assembly Pipeline and Notes](#metagenomic-assembly-pipeline-and-notes)
-  * [Overview:](#overview-)
-  * [Directory Structure:](#directory-structure-)
+  * [Overview:](#overview)
+  * [Directory Structure:](#directory-structure)
   * [Installation:](#installation)
-  * [Usage:](#usage-)
-    + [Method Wrappers:](#method-wrappers-)
-    + [Using the Config file & Command Line Options:](#using-the-config-file---command-line-options-)
-    + [Command line input:](#command-line-input-)
-  * [3rd Party Docs:](#3rd-party-docs-)
+  * [Usage:](#usage)
+    + [Method Wrappers:](#method-wrappers)
+    + [Using the Config file & Command Line Options:](#using-the-config-file---command-line-options)
+    + [Command line input:](#command-line-input)
+  * [3rd Party Docs:](#3rd-party-docs)
     + [Assembly](#assembly)
     + [Mapping](#mapping)
     + [Annotation](#annotation)
-  * [Useful shell/msub/Quest commands:](#useful-shell-msub-quest-commands-)
+  * [Useful shell/msub/Quest commands:](#useful-shell-msub-quest-commands)
 
 ## Overview:
 * The code in this repo is designed to quickly write and submit jobs to Northwestern's computing cluster to run 3rd party bioinformatics tools on multiple samples.
