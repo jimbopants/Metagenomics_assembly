@@ -45,16 +45,23 @@ megahit:
 
 ############
 # 3. Project filepaths
+#base_dir: "/projects/b1052/Wells_b1042/Jim/Wells01" # Prepended to all other params[paths]
 base_dir: "/projects/b1042/Wells/Jim/Wells01" # Prepended to all other params[paths]
+
 contig_names: "contig.fa" # (map_reads.py) Default megahit names is final.contigs.fa, cleanup_intermediates should update this.
 paths: # These all get prepended by base_dir since relative paths don't seem to work well with Quest.
+  co_index: "/assembled/co_assembly_stored/contig.fa"
   raw: "/reads/"
   clean: "/clean_reads/"  # assemble_reads.py looks here for samples
   assembly: "/assembled/" # assemble_reads.py puts output here
   raw_interleaved: "/fa_interleaved/" # assemble_reads.py + IDBA makes this
   reads_to_map: "/assembled/idba/" # map_reads.py maps reads found here. Matches sample names to clean_reads
   map: "/mapped_reads/idba_bwa/" # map_reads puts output here.
+  co_assembly_map: "/mapped_reads/co_assembly/" # map_co-assemble outputs here
   quast_out: "/quast_stats/" #quast_assembly_stats puts output here.
+  annotations: "/prokka_out/" # output from prokka
+path_out: #Update this in co-assembly-map, needed a pathout in b1042 in case the size is huge
+  co_assembly_map: /projects/b1042/Wells/Jim/Wells01/co_assembly/
 
 # 3b. Module filepaths
 modules:
@@ -69,5 +76,7 @@ modules:
 binaries:
   quast: "/projects/b1052/shared/quast-4.6.3/quast.py"
   spades: "/projects/b1052/shared/SPAdes-3.12.0-Linux/bin/spades"
+python_envs:
+  prokka: "prokka_working"
 ############
 ...

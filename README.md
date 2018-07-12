@@ -125,6 +125,10 @@ For debugging or quickly updating parameters without editing the config file, se
 ### Annotation
 * [prokka](https://github.com/tseemann/prokka)
     * Basically a wrapper for prodigal/hmmer with some automatic database construction. Seems easier to use than setting up each component individually
+---
+### Useful Links
+* [Uppsala Metagenomics Workshop rtd](https://metagenomics-workshop.readthedocs.io/en/latest/annotation/quantification.html)
+* [Metagenomics for microbial ecologists rtd](https://metagenomic-methods-for-microbial-ecologists.readthedocs.io/en/latest/#)
 
 ---
 ## Useful shell/msub/Quest commands:
