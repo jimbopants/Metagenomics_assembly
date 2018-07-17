@@ -76,7 +76,15 @@ modules:
 binaries:
   quast: "/projects/b1052/shared/quast-4.6.3/quast.py"
   spades: "/projects/b1052/shared/SPAdes-3.12.0-Linux/bin/spades"
+  maxbin: "/projects/b1052/shared/MaxBin-2.2.5/run_MaxBin.pl"
 python_envs:
-  prokka: "prokka_working"
+  prokka: "env_prokka"
+  metawrap: "env_metawrap"
+  metabat: "metabat2_py" # should switch to env_metabat to match others
+databases:
+  checkM: "/projects/b1052/shared/checkM_DB"
+  NCBI_nt: "/projects/b1052/shared/checkM_nt"
+  NCBI_nt: "/projects/b1052/shared/NCBI_tax"
+
 ############
 ...

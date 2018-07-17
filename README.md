@@ -60,7 +60,11 @@ The tree below is taken directly from what my project folder on quest looks like
 
 ## Installation:
 Clone this repo while logged into Quest:
-`Git clone https://github.com/jimbopants/Metagenomics_assembly`
+`Git clone https://github.com/jimbopants/Metagenomics_assembly`  
+
+* **Prokka** can be installed via: `` 
+
+
 
 ---
 ## Usage:
