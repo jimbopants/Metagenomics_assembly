@@ -89,6 +89,8 @@ def bwa(params, sample, outdir):
         "module load {0}\n".format(params["modules"]["bwa"]),
         "bwa index {0}\n".format(index),
         "bwa mem {0} {1} {2} > {3}/aln-pe.sam".format(index, fwd, rev, outdir)
+        # Need to add samtools view -> BAM, rm SAM, sort + index BAM, to mapping or add a mapping cleanup function to do this
+
            ]
 
 def bowtie(params, sample, outdir):

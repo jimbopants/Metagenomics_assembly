@@ -86,7 +86,8 @@ def main():
             # megahit can't recursively make paths or write to existing paths...
             outdir = "{0}{1}/{2}".format(params["paths"]["assembly"], method, sample[1])
             outdir = ll.make_dir("{}{}/".format(params["paths"]["assembly"], method)
-            job_out = ll.make_dir(params["paths"]["assembly"], "job_logs", None)
+            job_out = params["paths"]["assembly"] + "job_logs/"
+            os.makedirs(job_out, exist_ok=True)
             job_script = "{0}/{1}.assemble.{2}.sh".format(job_out, sample[1], method)
 
             # Open job script for writing and write header, then add method-specific lines

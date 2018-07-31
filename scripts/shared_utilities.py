@@ -59,6 +59,9 @@ def parse_arguments(process):
     parser.add_argument("--sample", "-s", nargs='?', const=True,
                         help="Path to single file. \
                         Forces script to operate on a single file only")
+    parser.add_argument("--ext", "-x", default='fna',
+                        help="Bin file extension. Only used by checkm_wrapper")
+
     try:
         result = parser.parse_args()
         return result
@@ -79,9 +82,11 @@ def load_params_and_input(process):
     if args.methods:
         params["methods"][process] = args.methods.split(',')
     if args.directory:
-        params["paths"]["clean"] = args.directory
+        params["paths"]["clean"] = args.directory # This is a horrible idea.
+        params["paths"]["directory"] = args.directory # This is less bad
     if args.out:
         params["paths"][process] = args.out
+        params["paths"]["out"] = args.out
     return params, args
 
 ################

@@ -60,6 +60,8 @@ paths: # These all get prepended by base_dir since relative paths don't seem to 
   co_assembly_map: "/mapped_reads/co_assembly/" # map_co-assemble outputs here
   quast_out: "/quast_stats/" #quast_assembly_stats puts output here.
   annotations: "/prokka_out/" # output from prokka
+  binning: "/binning/"
+  checkM: "/checkM"
 path_out: #Update this in co-assembly-map, needed a pathout in b1042 in case the size is huge
   co_assembly_map: /projects/b1042/Wells/Jim/Wells01/co_assembly/
 
@@ -72,7 +74,8 @@ modules:
   python: "python/anaconda3.6"
   boost: "boost/1.56.0"
   bwa: "bwa/0.7.12"
-  bowtie: "bowti2/2.2.6"
+  picard: "picard/2.6.0"
+  bedtools: "bedtools/2.17.0"
 binaries:
   quast: "/projects/b1052/shared/quast-4.6.3/quast.py"
   spades: "/projects/b1052/shared/SPAdes-3.12.0-Linux/bin/spades"
@@ -81,10 +84,13 @@ python_envs:
   prokka: "env_prokka"
   metawrap: "env_metawrap"
   metabat: "metabat2_py" # should switch to env_metabat to match others
+  concoct: "env_concoct"
 databases:
   checkM: "/projects/b1052/shared/checkM_DB"
   NCBI_nt: "/projects/b1052/shared/checkM_nt"
   NCBI_nt: "/projects/b1052/shared/NCBI_tax"
+module_paths:
+  picard: "/software/picard/2.6.0/picard-tools-2.6.0/picard.jar" # Why the fuck doesn't adding this to path let you find this?
 
 ############
 ...

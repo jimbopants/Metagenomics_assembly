@@ -1,4 +1,10 @@
 #!/bin/bash
+
+#################
+# By default, checkM uses .fna for extension, if extension differs, use -x
+#
+#################
+
 #MSUB -N checkm_test.sh
 #MSUB -A b1042
 #MSUB -q genomics
@@ -11,4 +17,4 @@
 
 cd /projects/b1042/Wells/Jim/Wells01/
 source activate metawrap-env
-checkm test ./checkm_test_results
+checkm lineage_wf /projects/b1042/Wells/Jim/Wells01/binning/metabat2_bins/ 
