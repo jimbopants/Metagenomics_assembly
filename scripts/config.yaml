@@ -61,7 +61,8 @@ paths: # These all get prepended by base_dir since relative paths don't seem to 
   quast_out: "/quast_stats/" #quast_assembly_stats puts output here.
   annotations: "/prokka_out/" # output from prokka
   binning: "/binning/"
-  checkM: "/checkM"
+  checkM: "/binning/checkM_QC"
+  jobs: "/job_scripts"
 path_out: #Update this in co-assembly-map, needed a pathout in b1042 in case the size is huge
   co_assembly_map: /projects/b1042/Wells/Jim/Wells01/co_assembly/
 

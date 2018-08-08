@@ -1,15 +1,16 @@
 #!/bin/bash
-#MSUB -N concoct_preprocess.sh
+#MSUB -N concoct_preprocess2.sh
 #MSUB -A b1042
 #MSUB -q genomics
 #MSUB -m ae
 #MSUB -M jamesgriffin2013@u.northwestern.edu
 #MSUB -l nodes=1:ppn=24
 #MSUB -l walltime=48:00:00
-#MSUB -o /projects/b1042/Wells/Jim/Wells01/logs/concoct_preprocess.o
-#MSUB -e /projects/b1042/Wells/Jim/Wells01/logs/concoct_preprocess.e
+#MSUB -o /projects/b1042/Wells/Jim/Wells01/logs/concoct_preprocess2.o
+#MSUB -e /projects/b1042/Wells/Jim/Wells01/logs/concoct_preprocess2.e
 
 # Written by JG 7/25/18
+# updaed 7/31/18
 
 # filenames:
 cd /projects/b1042/Wells/Jim/Wells01/
@@ -22,15 +23,18 @@ maxbins=200
 
 
 # Source CONCOCT programs
+# 7/31: Bash tip of the day:
+# Need to export (not with $) in order for subprocesses to see the variable.
 source activate env_concoct
 source source_concoct_paths.sh
 MRKDUP="/software/picard/2.6.0/picard-tools-2.6.0/picard.jar MarkDuplicates"
+export MRKDUP
 
 # cut up contigs into 10-20kbp length
-python $concoct/scripts/cut_up_fasta.py -c 10000 -o 0 -m $coassembly/contig.fa > $coassembly/contig_c10K.fa
+#python $concoct/scripts/cut_up_fasta.py -c 10000 -o 0 -m $coassembly/contig.fa > $coassembly/contig_c10K.fa
 
 # map w/ bowtie2:
-bowtie2-build $coassembly/contig_c10K.fa $coassembly/contig_c10K.fa
+#bowtie2-build $coassembly/contig_c10K.fa $coassembly/contig_c10K.fa
 
 # for each sample, run CONCOCT's mapping pipeline:
 # 1. Maps given paired library to given reference with bowtie2
@@ -46,10 +50,12 @@ bowtie2-build $coassembly/contig_c10K.fa $coassembly/contig_c10K.fa
 # bash tips: man to view command help. basename strips pre/suffix. mkdir -p does int. Paths
 # sed s/r1/r2 replaces r1 with r2 in s.
 cd $samples
+# 7/31: This didn't run because I didn't export MRKDUP to environment:
 for f in $samples/C*/*R1_trimmed.fq; do
-    mkdir -p map/$(basename -s _S1_R1_trimmed.fq $f);
-    cd map/$(basename -s _S1_R1_trimmed.fq $f);
-    bash $concoct/scripts/map-bowtie2-markduplicates.sh -ct 24 -p '-f' $f_ $(echo $f | sed s/R1/R2/) pair $coassembly/contig_c10K.fa asm bowtie2;
+    echo $f
+    mkdir -p map/$(basename -s _R1_trimmed.fq $f);
+    cd map/$(basename -s _R1_trimmed.fq $f);
+    bash $concoct/scripts/map-bowtie2-markduplicates.sh -ct 24 -p '-q' $f $(echo $f | sed s/R1/R2/) pair $coassembly/contig_c10K.fa asm bowtie2;
     cd ../..;
 done
 
